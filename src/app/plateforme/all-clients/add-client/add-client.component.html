@@ -1,0 +1,147 @@
+<div class="panel-header panel-header-sm">
+  </div>
+  <div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Ajouter le client</h5>
+            <button type="button" class="btn btn-primary" routerLink="/plateforme/allClients">Retour à la liste</button>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                  <h4>Compte</h4>
+              <form [formGroup]="clientForm">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <div>
+                          <div class="fileinput-new thumbnail">
+                            <img *ngIf='!photo' (click)="imgP.click()" style="cursor: grab;" width="300px" height="220px"
+                              src="./../../assets/img/addPorduit.png" alt="...">
+                            <img *ngIf='photo' (click)="imgP.click()" style="cursor: grab;" width="300px" height="220px"
+                              [src]="photo" alt="...">
+                          </div>
+                          <div (click)="imgP.click()" style="cursor: grab;"
+                            class="fileinput-preview fileinput-exists thumbnail"></div>
+                          <div>
+                            <input #imgP type="file" style="display: none;" name="photo" accept="image/pnj, image/jpg"
+                              (change)="filechageEvent($event)" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Email du client</mat-label>
+                            <input matInput formControlName="email" placeholder="Email du produit">
+                            <mat-error *ngIf="clientForm.hasError('required', 'email')"> Email est <b>obligatoire</b></mat-error>
+                            <mat-error
+                              *ngIf="clientForm.hasError('email', 'email') && !clientForm.hasError('required', 'email')"> Email
+                              est <b>incorrecte</b></mat-error>
+
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-12">
+                          <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Mot de passe</mat-label>
+                            <input matInput formControlName="mot_de_passe" type="password" placeholder="Mot de passe">
+                            <mat-error *ngIf="clientForm.hasError('required', 'mot_de_passe')"> Mot de passe est
+                              <b>obligatoire</b></mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-12">
+                          <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Nom du client</mat-label>
+                            <input matInput formControlName="nom_societe" placeholder="Nom du client">
+                            <mat-error *ngIf="clientForm.hasError('required', 'nom_societe')"> Nom du client est
+                              <b>obligatoire</b></mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Téléphone</mat-label>
+                        <input matInput formControlName="telephone" placeholder="Téléphone">
+                        <mat-error *ngIf="clientForm.hasError('required', 'telephone')"> Téléphone du client est
+                          <b>obligatoire</b></mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>adresse</mat-label>
+                        <input matInput formControlName="address" placeholder="Adresse">
+                        <mat-error *ngIf="clientForm.hasError('required', 'address')"> Adresse du client est
+                          <b>obligatoire</b></mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Site web du client</mat-label>
+                        <input matInput formControlName="site_web" placeholder="Site web">
+                        <mat-error *ngIf="clientForm.hasError('required', 'site_web')"> Site web du client est
+                          <b>obligatoire</b></mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Description du client</mat-label>
+                        <textarea matInput formControlName="description" rows="8" placeholder="Description de la societe"></textarea>
+                        <mat-error *ngIf="clientForm.hasError('required', 'description')"> Description du client est
+                          <b>obligatoire</b></mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-1">
+                  <hr>
+              </div>
+              <div class="col-md-5">
+                <h4>Contrat</h4>
+                <form [formGroup]="contratForm">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Produit</mat-label>
+                        <mat-select formControlName="produit" style="z-index: 10000">
+                          <mat-option *ngFor="let produit of produits" [value]="produit._id">
+                            {{produit.nom_produit}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="contratForm.hasError('required', 'produit')"> Produit est <b>obligatoire</b>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-12">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Periode</mat-label>
+                        <input matInput formControlName="periode" type="number" placeholder="Période" /> / Jours
+                        <mat-error *ngIf="contratForm.hasError('required', 'periode')"> Période est <b>obligatoire</b>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <button type="button" class="btn btn-primary" (click)="ajouterClient(clientForm,contratForm)">Ajouter le client</button>
+
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

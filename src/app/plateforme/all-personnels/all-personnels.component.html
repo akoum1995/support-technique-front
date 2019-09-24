@@ -1,0 +1,370 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-10">
+              <h4 class="card-title">Personnels</h4>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajoutPersonnel">Ajouter un
+                personnel</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input type="text" style="height: 45px;" [(ngModel)]="searchType.search" class="form-control"
+                  placeholder="Search">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <input (click)="addToFilter('status','active')" type="checkbox" class="form-control" />
+                    </div>
+                    <div class="col-md-10" style="margin-top: 2%;">
+                      Active
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <input (click)="addToFilter('status','supprime')" type="checkbox" class="form-control" />
+                    </div>
+                    <div class="col-md-10" style="margin-top: 2%;">
+                      Supprimé
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row">
+                      <mat-form-field style="width:100%">
+                          <mat-label>Poste</mat-label>
+                          <mat-select  (selectionChange)="addToFilter('poste',$event.value)"  multiple>
+                              <mat-option value="responsable logiciel">Responsable logiciel</mat-option>
+                              <mat-option value="responsable materiel">Responsable Materiel</mat-option>
+                              <mat-option value="intervenant logiciel">Intervenant logiciel</mat-option>
+                              <mat-option value="intervenant materiel">Intervenant materiel</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 2%;"></div>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                </th>
+                <th>
+                  Nom/Prénom
+                </th>
+                <th>
+                  Email
+                </th>
+                <th>
+                  Téléphone
+                </th>
+                <th>
+                  Poste
+                </th>
+                <th>
+                </th>
+                <th class="text-right">
+                </th>
+
+              </thead>
+              <tbody *ngFor="let personnel of personnelsFiltre | filterPersonnel: searchType.search">
+                <tr *ngIf="personnel.role === 'responsable logiciel'">
+                  <td *ngIf="personnel?.responsableLogiciel?.photo === ''">
+                    <img src="./../../assets/img/defaultImage.png" height="70px" width="70px">
+                  </td>
+                  <td *ngIf="personnel?.responsableLogiciel?.photo !== ''">
+                    <img src="http://localhost:3000/upload/{{personnel?.responsableLogiciel?.photo}}" height="70px"
+                      width="70px">
+                  </td>
+                  <td>
+                    {{personnel?.responsableLogiciel?.nom}} {{personnel?.responsableLogiciel?.prenom}}
+                  </td>
+                  <td>
+                    {{personnel?.email}}
+                  </td>
+                  <td>
+                    {{personnel?.responsableLogiciel?.telephone}}
+                  </td>
+                  <td>
+                    {{personnel?.role}}
+                  </td>
+                  <td>
+                    <button *ngIf="personnel?.status !== 'supprime'" mat-button
+                      (click)="supprimePersonnel(personnel?._id)" type="button" class="btn btn-danger btn-link">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button *ngIf="personnel?.status === 'supprime'" mat-button
+                      (click)="reactivePersonnel(personnel?._id)" type="button" class="btn btn-success btn-link">
+                      <i class="material-icons">check_circle_outline</i>
+                    </button>
+                  </td>
+                  <td *ngIf="personnel?.status === 'supprime'" class="ribbonRed">
+                    <span>SUPPRIME</span>
+                  </td>
+                  <td *ngIf="personnel?.status === 'active'" class="ribbon">
+                    <span>ACTIVE</span>
+                  </td>
+                </tr>
+                <tr *ngIf="personnel.role === 'intervenant logiciel'">
+                  <td *ngIf="personnel?.intervenantLogiciel?.photo === ''">
+                    <img src="./../../assets/img/defaultImage.png" height="70px" width="70px">
+                  </td>
+                  <td *ngIf="personnel?.intervenantLogiciel?.photo !== ''">
+                    <img src="http://localhost:3000/upload/{{personnel?.intervenantLogiciel?.photo}}" height="70px"
+                      width="70px">
+                  </td>
+                  <td>
+                    {{personnel?.intervenantLogiciel?.nom}} {{personnel?.intervenantLogiciel?.prenom}}
+                  </td>
+                  <td>
+                    {{personnel?.email}}
+                  </td>
+                  <td>
+                    {{personnel?.intervenantLogiciel?.telephone}}
+                  </td>
+                  <td>
+                    {{personnel?.role}}
+                  </td>
+                  <td>
+                    <button *ngIf="personnel?.status !== 'supprime'" mat-button
+                      (click)="supprimePersonnel(personnel?._id)" type="button" class="btn btn-danger btn-link">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button *ngIf="personnel?.status === 'supprime'" mat-button
+                      (click)="reactivePersonnel(personnel?._id)" type="button" class="btn btn-success btn-link">
+                      <i class="material-icons">check_circle_outline</i>
+                    </button>
+                  </td>
+                  <td *ngIf="personnel?.status === 'supprime'" class="ribbonRed">
+                    <span>SUPPRIME</span>
+                  </td>
+                  <td *ngIf="personnel?.status === 'active'" class="ribbon">
+                    <span>ACTIVE</span>
+                  </td>
+                </tr>
+                <tr *ngIf="personnel.role === 'responsable materiel'">
+                  <td *ngIf="personnel?.responsableMateriel?.photo === ''">
+                    <img src="./../../assets/img/defaultImage.png" height="70px" width="70px">
+                  </td>
+                  <td *ngIf="personnel?.responsableMateriel?.photo !== ''">
+                    <img src="http://localhost:3000/upload/{{personnel?.responsableMateriel?.photo}}" height="70px"
+                      width="70px">
+                  </td>
+                  <td>
+                    {{personnel?.responsableMateriel?.nom}} {{personnel?.responsableMateriel?.prenom}}
+                  </td>
+                  <td>
+                    {{personnel?.email}}
+                  </td>
+                  <td>
+                    {{personnel?.responsableMateriel?.telephone}}
+                  </td>
+                  <td>
+                    {{personnel?.role}}
+                  </td>
+                  <td>
+                    <button *ngIf="personnel?.status !== 'supprime'" mat-button
+                      (click)="supprimePersonnel(personnel?._id)" type="button" class="btn btn-danger btn-link">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button *ngIf="personnel?.status === 'supprime'" mat-button
+                      (click)="reactivePersonnel(personnel?._id)" type="button" class="btn btn-success btn-link">
+                      <i class="material-icons">check_circle_outline</i>
+                    </button>
+                  </td>
+                  <td *ngIf="personnel?.status === 'supprime'" class="ribbonRed">
+                    <span>SUPPRIME</span>
+                  </td>
+                  <td *ngIf="personnel?.status === 'active'" class="ribbon">
+                    <span>ACTIVE</span>
+                  </td>
+                </tr>
+                <tr *ngIf="personnel.role === 'intervenant materiel'">
+                  <td *ngIf="personnel?.intervenantMateriel?.photo === ''">
+                    <img src="./../../assets/img/defaultImage.png" height="70px" width="70px">
+                  </td>
+                  <td *ngIf="personnel?.intervenantMateriel?.photo !== ''">
+                    <img src="http://localhost:3000/upload/{{personnel?.intervenantMateriel?.photo}}" height="70px"
+                      width="70px">
+                  </td>
+                  <td>
+                    {{personnel?.intervenantMateriel?.nom}} {{personnel?.intervenantMateriel?.prenom}}
+                  </td>
+                  <td>
+                    {{personnel?.email}}
+                  </td>
+                  <td>
+                    {{personnel?.intervenantMateriel?.telephone}}
+                  </td>
+                  <td>
+                    {{personnel?.role}}
+                  </td>
+                  <td>
+                    <button *ngIf="personnel?.status !== 'supprime'" mat-button
+                      (click)="supprimePersonnel(personnel?._id)" type="button" class="btn btn-danger btn-link">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button *ngIf="personnel?.status === 'supprime'" mat-button
+                      (click)="reactivePersonnel(personnel?._id)" type="button" class="btn btn-success btn-link">
+                      <i class="material-icons">check_circle_outline</i>
+                    </button>
+                  </td>
+                  <td *ngIf="personnel?.status === 'supprime'" class="ribbonRed">
+                    <span>SUPPRIME</span>
+                  </td>
+                  <td *ngIf="personnel?.status === 'active'" class="ribbon">
+                    <span>ACTIVE</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="ajoutPersonnel" tabindex="-1" role="dialog" aria-labelledby="ajoutPersonnelLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="personnelForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                <div>
+                  <div class="fileinput-new thumbnail">
+                    <img *ngIf='!photo' (click)="imgP.click()" style="cursor: grab;"
+                      src="./../../assets/img/addPorduit.png" alt="...">
+                    <img *ngIf='photo' (click)="imgP.click()" style="cursor: grab;" width="300px" height="200px"
+                      [src]="photo" alt="...">
+                  </div>
+                  <div (click)="imgP.click()" style="cursor: grab;"
+                    class="fileinput-preview fileinput-exists thumbnail"></div>
+                  <div>
+                    <input #imgP type="file" style="display: none;" name="photo" accept="image/pnj, image/jpg"
+                      (change)="filechageEvent($event)" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div style="margin-top:9%;"></div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-label>Email du personnel</mat-label>
+                    <input matInput formControlName="email" placeholder="Nom du produit">
+                    <mat-error *ngIf="personnelForm.hasError('required', 'email')">Email du personnel est
+                      <b>obligatoire</b></mat-error>
+                    <mat-error
+                      *ngIf="personnelForm.hasError('email', 'email') && !personnelForm.hasError('required', 'email')">
+                      Email est <b>incorrecte</b></mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-12">
+                  <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput formControlName="mot_de_passe" type="password" placeholder="Version du produit">
+                    <mat-error *ngIf="personnelForm.hasError('required', 'mot_de_passe')"> Mot de passe est
+                      <b>obligatoire</b></mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-bottom: 2%"></div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Nom du personnel</mat-label>
+                <input matInput formControlName="nom" placeholder="Nom du personnel">
+                <mat-error *ngIf="personnelForm.hasError('required', 'nom')"> Nom du personnel est <b>obligatoire</b>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Prenom du personnel</mat-label>
+                <input matInput formControlName="prenom" placeholder="Prenom du personnel">
+                <mat-error *ngIf="personnelForm.hasError('required', 'prenom')"> Prenom du personnel est
+                  <b>obligatoire</b></mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Adresse du personnel</mat-label>
+                <input matInput formControlName="address" placeholder="Adresse du personnel">
+                <mat-error *ngIf="personnelForm.hasError('required', 'address')"> Adresse du personnel est
+                  <b>obligatoire</b></mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Télephone du personnel</mat-label>
+                <input matInput formControlName="telephone" placeholder="Télephone du personnel">
+                <mat-error *ngIf="personnelForm.hasError('required', 'telephone')"> Télephone du personnel est
+                  <b>obligatoire</b></mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <mat-radio-group aria-label="Select an option">
+                <mat-radio-button (click)="getRole('responsable logiciel')" value="responsable logiciel">Responsable
+                  logiciel</mat-radio-button>
+                <mat-radio-button (click)="getRole('responsable materiel')" value="responsable materiel">Responsable
+                  Materiel</mat-radio-button>
+                <mat-radio-button (click)="getRole('intervenant logiciel')" value="intervenant logiciel">Intervenant
+                  logiciel</mat-radio-button>
+                <mat-radio-button (click)="getRole('intervenant materiel')" value="intervenant materiel">Intervenant
+                  Materiel</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" [disabled]="!personnelForm.valid"
+          (click)="ajouterPersonnel(personnelForm)" data-dismiss="modal">Sauvegarder</button>
+
+      </div>
+    </div>
+  </div>
+</div>

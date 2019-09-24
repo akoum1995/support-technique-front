@@ -1,0 +1,644 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row" *ngIf="authService.utilisateurConnecte.administrateur">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre Profile</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup] ="utilisateurForm">
+            <div class="row">
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom"  placeholder="Nom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'nom')"> Période est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Prenom</mat-label>
+                  <input matInput formControlName="prenom"  placeholder="Prenom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'prenom')"> Prenom est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput formControlName="telephone"  placeholder="Téléphone" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'telephone')"> Téléphone est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Adresse</mat-label>
+                  <input matInput formControlName="address"  placeholder="Adresse" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'address')"> Adresse est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12 text-right">
+                <button class="btn btn-primary" [disabled]="!utilisateurForm" (click)="ChangerAdmin(utilisateurForm)"> Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre compte</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="compteForm">
+            <div class="row">
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email"  placeholder="Email" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'email')"> Email est <b>obligatoire</b>
+                  </mat-error>
+                  <mat-error *ngIf="compteForm.hasError('email', 'email')"> Email est <b>incorrecte</b></mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Mot de passe</mat-label>
+                  <input matInput formControlName="mot_de_passe"  placeholder="Mot de passe" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'mot_de_passe')"> Mot de passe est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 text-right">
+                <button class="btn btn-primary" [disabled]="!compteForm" (click)="ChangerCompte(compteForm)">Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="./../../../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="javascript:void(0)">
+              <img *ngIf="user?.photo === ''" class="avatar border-gray" src="./../../../assets/img/defaultImage.png" alt="...">
+              <img *ngIf="user?.photo !== ''" class="avatar border-gray" src="http://localhost:3000/upload/{{user?.photo}}" alt="...">
+              <h5 class="title"></h5>
+            </a>
+            <p class="description">
+              {{user?.nom}} {{user?.prenom}}
+            </p>
+          </div>
+          <p class="description text-center">
+            tel: {{user?.telephone}}
+            <br> email: {{authService.utilisateurConnecte.email}}
+            <br> adresse: {{user?.address}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="authService.utilisateurConnecte.responsableLogiciel">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre Profile</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup] ="utilisateurForm">
+            <div class="row">
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom"  placeholder="Nom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'nom')"> Période est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Prenom</mat-label>
+                  <input matInput formControlName="prenom"  placeholder="Prenom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'prenom')"> Prenom est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput formControlName="telephone"  placeholder="Téléphone" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'telephone')"> Téléphone est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Adresse</mat-label>
+                  <input matInput formControlName="address"  placeholder="Adresse" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'address')"> Adresse est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12 text-right">
+                <button class="btn btn-primary" [disabled]="!utilisateurForm" (click)="ChangerRespLogiciel(utilisateurForm)"> Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre compte</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="compteForm">
+            <div class="row">
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email"  placeholder="Email" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'email')"> Email est <b>obligatoire</b>
+                  </mat-error>
+                  <mat-error *ngIf="compteForm.hasError('email', 'email')"> Email est <b>incorrecte</b></mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Mot de passe</mat-label>
+                  <input matInput formControlName="mot_de_passe"  placeholder="Mot de passe" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'mot_de_passe')"> Mot de passe est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 text-right">
+                <button class="btn btn-primary" [disabled]="!compteForm" (click)="ChangerCompte(compteForm)">Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="./../../../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="javascript:void(0)">
+              <img *ngIf="user?.photo === ''" class="avatar border-gray" src="./../../../assets/img/defaultImage.png" alt="...">
+              <img *ngIf="user?.photo !== ''" class="avatar border-gray" src="http://localhost:3000/upload/{{user?.photo}}" alt="...">
+              <h5 class="title"></h5>
+            </a>
+            <p class="description">
+              {{user?.nom}} {{user?.prenom}}
+            </p>
+          </div>
+          <p class="description text-center">
+            tel: {{user?.telephone}}
+            <br> email: {{authService.utilisateurConnecte.email}}
+            <br> adresse: {{user?.address}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="authService.utilisateurConnecte.responsableMateriel">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre Profile</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup] ="utilisateurForm">
+            <div class="row">
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom"  placeholder="Nom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'nom')"> Période est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Prenom</mat-label>
+                  <input matInput formControlName="prenom"  placeholder="Prenom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'prenom')"> Prenom est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput formControlName="telephone"  placeholder="Téléphone" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'telephone')"> Téléphone est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Adresse</mat-label>
+                  <input matInput formControlName="address"  placeholder="Adresse" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'address')"> Adresse est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12 text-right">
+                <button class="btn btn-primary" [disabled]="!utilisateurForm" (click)="ChangerRespMateriel(utilisateurForm)"> Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre compte</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="compteForm">
+            <div class="row">
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email"  placeholder="Email" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'email')"> Email est <b>obligatoire</b>
+                  </mat-error>
+                  <mat-error *ngIf="compteForm.hasError('email', 'email')"> Email est <b>incorrecte</b></mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Mot de passe</mat-label>
+                  <input matInput formControlName="mot_de_passe"  placeholder="Mot de passe" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'mot_de_passe')"> Mot de passe est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 text-right">
+                <button class="btn btn-primary" [disabled]="!compteForm" (click)="ChangerCompte(compteForm)">Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="./../../../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="javascript:void(0)">
+              <img *ngIf="user?.photo === ''" class="avatar border-gray" src="./../../../assets/img/defaultImage.png" alt="...">
+              <img *ngIf="user?.photo !== ''" class="avatar border-gray" src="http://localhost:3000/upload/{{user?.photo}}" alt="...">
+              <h5 class="title"></h5>
+            </a>
+            <p class="description">
+              {{user?.nom}} {{user?.prenom}}
+            </p>
+          </div>
+          <p class="description text-center">
+            tel: {{user?.telephone}}
+            <br> email: {{authService.utilisateurConnecte.email}}
+            <br> adresse: {{user?.address}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="authService.utilisateurConnecte.intervenantLogiciel">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre Profile</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup] ="utilisateurForm">
+            <div class="row">
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom"  placeholder="Nom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'nom')"> Période est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Prenom</mat-label>
+                  <input matInput formControlName="prenom"  placeholder="Prenom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'prenom')"> Prenom est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput formControlName="telephone"  placeholder="Téléphone" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'telephone')"> Téléphone est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Adresse</mat-label>
+                  <input matInput formControlName="address"  placeholder="Adresse" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'address')"> Adresse est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12 text-right">
+                <button class="btn btn-primary" [disabled]="!utilisateurForm" (click)="ChangerIntLogiciel(utilisateurForm)"> Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre compte</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="compteForm">
+            <div class="row">
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email"  placeholder="Email" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'email')"> Email est <b>obligatoire</b>
+                  </mat-error>
+                  <mat-error *ngIf="compteForm.hasError('email', 'email')"> Email est <b>incorrecte</b></mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Mot de passe</mat-label>
+                  <input matInput formControlName="mot_de_passe"  placeholder="Mot de passe" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'mot_de_passe')"> Mot de passe est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 text-right">
+                <button class="btn btn-primary" [disabled]="!compteForm" (click)="ChangerCompte(compteForm)">Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="./../../../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="javascript:void(0)">
+              <img *ngIf="user?.photo === ''" class="avatar border-gray" src="./../../../assets/img/defaultImage.png" alt="...">
+              <img *ngIf="user?.photo !== ''" class="avatar border-gray" src="http://localhost:3000/upload/{{user?.photo}}" alt="...">
+              <h5 class="title"></h5>
+            </a>
+            <p class="description">
+              {{user?.nom}} {{user?.prenom}}
+            </p>
+          </div>
+          <p class="description text-center">
+            tel: {{user?.telephone}}
+            <br> email: {{authService.utilisateurConnecte.email}}
+            <br> adresse: {{user?.address}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="authService.utilisateurConnecte.intervenantMateriel">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre Profile</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup] ="utilisateurForm">
+            <div class="row">
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Nom</mat-label>
+                  <input matInput formControlName="nom"  placeholder="Nom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'nom')"> Période est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Prenom</mat-label>
+                  <input matInput formControlName="prenom"  placeholder="Prenom" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'prenom')"> Prenom est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput formControlName="telephone"  placeholder="Téléphone" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'telephone')"> Téléphone est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Adresse</mat-label>
+                  <input matInput formControlName="address"  placeholder="Adresse" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'address')"> Adresse est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12 text-right">
+                <button class="btn btn-primary" [disabled]="!utilisateurForm" (click)="ChangerIntMateriel(utilisateurForm)"> Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre compte</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="compteForm">
+            <div class="row">
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email"  placeholder="Email" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'email')"> Email est <b>obligatoire</b>
+                  </mat-error>
+                  <mat-error *ngIf="compteForm.hasError('email', 'email')"> Email est <b>incorrecte</b></mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Mot de passe</mat-label>
+                  <input matInput formControlName="mot_de_passe"  placeholder="Mot de passe" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'mot_de_passe')"> Mot de passe est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 text-right">
+                <button class="btn btn-primary" [disabled]="!compteForm" (click)="ChangerCompte(compteForm)">Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="./../../../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="javascript:void(0)">
+              <img *ngIf="user?.photo === ''" class="avatar border-gray" src="./../../../assets/img/defaultImage.png" alt="...">
+              <img *ngIf="user?.photo !== ''" class="avatar border-gray" src="http://localhost:3000/upload/{{user?.photo}}" alt="...">
+              <h5 class="title"></h5>
+            </a>
+            <p class="description">
+              {{user?.nom}} {{user?.prenom}}
+            </p>
+          </div>
+          <p class="description text-center">
+            tel: {{user?.telephone}}
+            <br> email: {{authService.utilisateurConnecte.email}}
+            <br> adresse: {{user?.address}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="authService.utilisateurConnecte.client">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre Profile</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup] ="utilisateurForm">
+            <div class="row">
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Nom société</mat-label>
+                  <input matInput formControlName="nom_societe"  placeholder="Nom société" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'nom_societe')"> Nom société est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Site web</mat-label>
+                  <input matInput formControlName="site_web"  placeholder="Site web" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'site_web')"> Site web est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Téléphone</mat-label>
+                  <input matInput formControlName="telephone"  placeholder="Téléphone" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'telephone')"> Téléphone est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Adresse</mat-label>
+                  <input matInput formControlName="address"  placeholder="Adresse" />
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'address')"> Adresse est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>A propos</mat-label>
+                  <textarea rows="6" matInput formControlName="description"  placeholder="A propos" ></textarea>
+                  <mat-error *ngIf="utilisateurForm.hasError('required', 'description')"> A propos est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12 text-right">
+                <button class="btn btn-primary" [disabled]="!utilisateurForm" (click)="changerClient(utilisateurForm)"> Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Modifier votre compte</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="compteForm">
+            <div class="row">
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email"  placeholder="Email" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'email')"> Email est <b>obligatoire</b>
+                  </mat-error>
+                  <mat-error *ngIf="compteForm.hasError('email', 'email')"> Email est <b>incorrecte</b></mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 pl-1">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                  <mat-label>Mot de passe</mat-label>
+                  <input matInput formControlName="mot_de_passe"  placeholder="Mot de passe" />
+                  <mat-error *ngIf="compteForm.hasError('required', 'mot_de_passe')"> Mot de passe est <b>obligatoire</b>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 text-right">
+                <button class="btn btn-primary" [disabled]="!compteForm" (click)="ChangerCompte(compteForm)">Sauvegarder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="image">
+          <img src="./../../../assets/img/bg5.jpg" alt="...">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="javascript:void(0)">
+              <img *ngIf="user?.logo === ''" class="avatar border-gray" src="./../../../assets/img/defaultImage.png" alt="...">
+              <img *ngIf="user?.logo !== ''" class="avatar border-gray" src="http://localhost:3000/upload/{{user?.logo}}" alt="...">
+              <h5 class="title"></h5>
+            </a>
+            <p class="description">
+              {{user?.nom_societe}}
+            </p>
+          </div>
+          <p class="description text-center">
+            tel: {{user?.telephone}}
+            <br> email: {{authService.utilisateurConnecte.email}}
+            <br> site web: {{user?.site_web}}
+            <br> adresse: {{user?.address}}
+            <br> description: {{user?.description}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,286 @@
+<div class="panel-header panel-header-sm">
+  </div>
+  <div class="main-content">
+    <div *ngIf="clicked === false" class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-10">
+                  <h4 class="card-title">Produits</h4>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajoutProduit">Ajouter un produit</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body" >
+              <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <input type="text" style="height: 45px;" [(ngModel)] = "searchType.search" class="form-control" placeholder="Search">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="col-md-2">
+                          <input (click)="addToFilter('status','active')" type="checkbox" class="form-control" />
+                      </div>
+                      <div class="col-md-10" style="margin-top: 2%;">
+                          Active
+                        </div>
+                    </div>
+                    </div>
+                  <div class="col-md-4">
+                      <div class="row">
+                          <div class="col-md-2">
+                              <input (click)="addToFilter('status','supprime')" type="checkbox" class="form-control" />
+                          </div>
+                          <div class="col-md-10" style="margin-top: 2%;">
+                              Supprimé
+                            </div>
+                        </div>
+                  </div>
+                  <div style="margin-bottom: 2%;"></div>
+                </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>
+                  </th>
+                  <th>
+                    Nom du produit
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                  <th>
+                    Version
+                  </th>
+                  <th>
+                  </th>
+                  <th class="text-right">
+                  </th>
+
+                </thead>
+                <tbody *ngFor="let produit of produitsFiltre | filterProduits: searchType.search">
+                  <tr>
+                    <td *ngIf="produit?.photo === ''">
+                      <img src="./../../assets/img/defaultImageProduit.jpg" height="70px" width="70px">
+                    </td>
+                    <td *ngIf="produit?.photo !== ''">
+                      <img src="http://localhost:3000/upload/{{produit?.photo}}" height="70px" width="70px">
+                    </td>
+                    <td>
+                      {{produit?.nom_produit}}
+                    </td>
+                    <td>
+                      {{produit?.description}}
+                    </td>
+                    <td >
+                       {{produit?.version}}
+                    </td>
+                    <td>
+                      <button (click)="getPorduit(produit)" mat-button type="button" class="btn btn-info btn-link">
+                        <i class="material-icons">remove_red_eye</i>
+                    </button>
+                    <button mat-button data-toggle="modal" data-target="#modifProduit" (click)="getProduit(produit)"  type="button" class="btn btn-warning btn-link">
+                        <i class="material-icons">edit</i>
+                    </button>
+                    <button *ngIf="produit?.status !== 'supprime'" mat-button (click)="supprimeProduit(produit?._id)" type="button" class="btn btn-danger btn-link">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button *ngIf="produit?.status === 'supprime'" mat-button (click)="reactiveProduit(produit?._id)" type="button" class="btn btn-success btn-link">
+                      <i class="material-icons">check_circle_outline</i>
+                    </button>
+                    </td>
+                    <td *ngIf="produit?.status === 'supprime'" class="ribbonRed">
+                      <span>SUPPRIME</span>
+                    </td>
+                    <td *ngIf="produit?.status === 'active'" class="ribbon">
+                      <span>ACTIVE</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="clicked === true" class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-10">
+                  <h4 class="card-title">Produits</h4>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-primary" (click)="clicked = false">Retour à la liste</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body" >
+            <div class="row">
+              <div class="col-md-6" *ngIf="produit?.photo === ''">
+                  <img src="./../../assets/img/defaultImageProduit.jpg" height="200px" width="100%">
+              </div>
+              <div class="col-md-6" *ngIf="produit?.photo !== ''">
+                  <img src="http://localhost:3000/upload/{{produit?.photo}}" height="200px" width="100%">
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
+                      <h2>{{produit?.nom_produit}}</h2>
+                  </div>
+                  <div class="col-md-12">
+                      <h3>{{produit?.nom_produit}} <small>({{produit?.version}})</small> -- {{produit?.status}}</h3>
+                  </div>
+                  <div class="col-md-12">
+                      <h5>{{produit?.description}}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="ajoutProduit" tabindex="-1" role="dialog" aria-labelledby="ajoutProduitLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="produitForm">
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <div>
+                            <div class="fileinput-new thumbnail">
+                                <img *ngIf='!photo' (click)="imgP.click()" style="cursor: grab;" src="./../../assets/img/addPorduit.png" alt="...">
+                                <img *ngIf='photo' (click)="imgP.click()" style="cursor: grab;" width="300px" height="200px" [src]="photo" alt="...">
+                              </div>
+                             <div (click)="imgP.click()" style="cursor: grab;" class="fileinput-preview fileinput-exists thumbnail"></div>
+                             <div>
+                                <input #imgP type="file" style="display: none;" name="photo"   accept="image/pnj, image/jpg" (change)="filechageEvent($event)" />
+                            </div>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="margin-top:9%;"></div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Nom du produit</mat-label>
+                            <input matInput formControlName="nom_produit" placeholder="Nom du produit">
+                            <mat-error *ngIf="produitForm.hasError('required', 'nom_produit')"> Nom du produit est <b>obligatoire</b></mat-error>
+                          </mat-form-field>
+                    </div>
+                    <div class="col-md-12">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Version du produit</mat-label>
+                            <input matInput formControlName="version" placeholder="Version du produit">
+                            <mat-error *ngIf="produitForm.hasError('required', 'version')"> Version du produit est <b>obligatoire</b></mat-error>
+                          </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-bottom: 2%"></div>
+              <div class="row">
+                <div class="col-md-12">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Description du produit</mat-label>
+                        <textarea matInput formControlName="description" rows="10" placeholder="Nom du produit"></textarea>
+                        <mat-error *ngIf="produitForm.hasError('required', 'description')"> Description du produit est <b>obligatoire</b></mat-error>
+                      </mat-form-field>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="button" class="btn btn-primary" [disabled]="!produitForm.valid" (click)="ajouterProduit(produitForm)" data-dismiss="modal">Sauvegarder</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modifProduit" tabindex="-1" role="dialog" aria-labelledby="modifProduitLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="produitmodifForm">
+                <div class="row">
+                  <div class="col-md-6">
+                      <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                          <div>
+                              <div class="fileinput-new thumbnail">
+                                  <img *ngIf="produitmodifForm.value.photo === '' && !photo" (click)="imgP2.click()" style="cursor: grab;" width="300px" height="200px" src="./../../assets/img/addPorduit.png" alt="...">
+                                  <img *ngIf="produitmodifForm.value.photo !== '' && !photo" (click)="imgP2.click()" style="cursor: grab;" width="300px" height="200px" src="http://localhost:3000/upload/{{produitmodifForm.value.photo}}" alt="...">
+                                  <img *ngIf=" produitmodifForm.value.photo !== '' && photo " (click)="imgP2.click()" style="cursor: grab;"  width="300px" height="200px" [src]="photo" alt="...">
+                                  <img *ngIf="produitmodifForm.value.photo === '' && photo" (click)="imgP2.click()" style="cursor: grab;" width="300px" height="200px" [src]="photo" alt="...">
+                                </div>
+                               <div (click)="imgP.click()" style="cursor: grab;" class="fileinput-preview fileinput-exists thumbnail"></div>
+                               <div>
+                                  <input #imgP2 type="file" style="display: none;" name="photo"   accept="image/pnj, image/jpg" (change)="filechageEvent($event)" />
+                              </div>
+                          </div>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div style="margin-top:9%;"></div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                          <mat-form-field style="width: 100%;" appearance="outline">
+                              <mat-label>Nom du produit</mat-label>
+                              <input matInput formControlName="nom_produit" placeholder="Nom du produit">
+                              <mat-error *ngIf="produitForm.hasError('required', 'nom_produit')"> Nom du produit est <b>obligatoire</b></mat-error>
+                            </mat-form-field>
+                      </div>
+                      <div class="col-md-12">
+                          <mat-form-field style="width: 100%;" appearance="outline">
+                              <mat-label>Version du produit</mat-label>
+                              <input matInput formControlName="version" placeholder="Version du produit">
+                              <mat-error *ngIf="produitForm.hasError('required', 'version')"> Version du produit est <b>obligatoire</b></mat-error>
+                            </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="margin-bottom: 2%"></div>
+                <div class="row">
+                  <div class="col-md-12">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                          <mat-label>Description du produit</mat-label>
+                          <textarea matInput formControlName="description" rows="10" placeholder="Nom du produit"></textarea>
+                          <mat-error *ngIf="produitForm.hasError('required', 'description')"> Description du produit est <b>obligatoire</b></mat-error>
+                        </mat-form-field>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+              <button type="button" class="btn btn-primary" [disabled]="!produitmodifForm.valid" (click)="modifierProduit(produitmodifForm)" data-dismiss="modal">Sauvegarder</button>
+
+            </div>
+          </div>
+        </div>
+      </div>

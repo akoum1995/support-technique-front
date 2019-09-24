@@ -1,0 +1,195 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-10">
+              <h4 class="card-title">Réclamations</h4>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input type="text" style="height: 45px;" [(ngModel)]="searchType.search" class="form-control"
+                  placeholder="Search">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="row">
+                <div class="col-md-2">
+                  <input (click)="addToFilter('status','non traitée')" type="checkbox" class="form-control" />
+                </div>
+                <div class="col-md-10" style="margin-top: 2%;">
+                  Non traitée
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="row">
+                <div class="col-md-2">
+                  <input (click)="addToFilter('status','en cours')" type="checkbox" class="form-control" />
+                </div>
+                <div class="col-md-10" style="margin-top: 2%;">
+                  En cours
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                  <div class="col-md-2">
+                    <input (click)="addToFilter('status','traitée')" type="checkbox" class="form-control" />
+                  </div>
+                  <div class="col-md-10" style="margin-top: 2%;">
+                    Traitée
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <input (click)="addToFilter('type_reclamation','logiciel')" type="checkbox" class="form-control" />
+                    </div>
+                    <div class="col-md-10" style="margin-top: 2%;">
+                      Logiciel
+                    </div>
+                  </div>
+                </div>
+              <div class="col-md-3">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <input (click)="addToFilter('degres','faible')" type="checkbox" class="form-control" />
+                    </div>
+                    <div class="col-md-10" style="margin-top: 2%;">
+                      Faible
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                      <div class="col-md-2">
+                        <input (click)="addToFilter('degres','moyenne')" type="checkbox" class="form-control" />
+                      </div>
+                      <div class="col-md-10" style="margin-top: 2%;">
+                        Moyenne
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="row">
+                        <div class="col-md-2">
+                          <input (click)="addToFilter('degres','forte')" type="checkbox" class="form-control" />
+                        </div>
+                        <div class="col-md-10" style="margin-top: 2%;">
+                          Forte
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row">
+                          <div class="col-md-2">
+                            <input (click)="addToFilter('type_reclamation','materiel')" type="checkbox" class="form-control" />
+                          </div>
+                          <div class="col-md-10" style="margin-top: 2%;">
+                            Materiel
+                          </div>
+                        </div>
+                      </div>
+            <div style="margin-bottom: 2%;"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4" *ngFor=" let reclamation of reclamationsFiltre | filterReclamations: searchType.search">
+              <div class="card card-user">
+                <div class="image">
+                  <img width="100%" src="./../../assets/img/reclamation2.jpg" alt="...">
+                </div>
+                <div class="card-body">
+                  <div class="author">
+                    <a href="javascript:void(0)">
+                      <img *ngIf="reclamation?.produit?.photo === ''" class="avatar border-gray"
+                        src="./../../../assets/img/defaultImageProduit.jpg" alt="...">
+                      <img *ngIf="reclamation?.produit?.photo !== ''" class="avatar border-gray"
+                        src="http://localhost:3000/upload/{{reclamation?.produit?.photo}}" alt="...">
+
+                      <h5 class="title">{{reclamation?.client?.nom_societe}} -- {{reclamation?.produit?.nom_produit}}</h5>
+                      <h6>{{reclamation?.type_reclamation}}--{{reclamation?.degres}}</h6>
+                      <h6>{{reclamation?.sujet}}</h6>
+
+                    </a>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#descriptionInter" (click)="getDescription(reclamation?.description)">Description</button>
+                    <!-- <p class="description">
+                      {{reclamation?.description}}
+                    </p> -->
+                  </div>
+                </div>
+                <hr>
+                <div class="button-container">
+                  <h3 *ngIf="reclamation?.statut === 'non traitée'"> Non traitée</h3>
+                  <h3 *ngIf="reclamation?.statut === 'en cours'"> En cours</h3>
+                  <h3 *ngIf="reclamation?.statut === 'traitée'"> Traitée</h3>
+                  <button *ngIf="reclamation?.statut !== 'traitée'" class="btn btn-primary" data-toggle="modal" data-target="#creerIntervention" (click)="getReclamation(reclamation?._id)">Envoyer le PV</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="creerIntervention" tabindex="-1" role="dialog" aria-labelledby="creerInterventionLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="interventionForm">
+          <div class="row">
+            <div class="col-md-12">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-label>Description du pv</mat-label>
+                    <textarea matInput formControlName="pv" rows="10" placeholder="Nom du produit"></textarea>
+                    <mat-error *ngIf="interventionForm.hasError('required', 'pv')"> Description du pv est <b>obligatoire</b></mat-error>
+                  </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" [disabled]="!interventionForm.valid" (click)="ajouterIntervention(interventionForm)" data-dismiss="modal">Sauvegarder</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="descriptionInter" tabindex="-1" role="dialog" aria-labelledby="descriptionClientLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">PV</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+                   <p>{{description}}</p>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

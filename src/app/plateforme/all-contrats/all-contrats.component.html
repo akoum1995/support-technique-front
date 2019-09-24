@@ -1,0 +1,193 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-10">
+              <h4 class="card-title">Mes Contrats</h4>
+            </div>
+            <div class="col-md-2">
+              <button *ngIf="clicked === 'contrat'" type="button" class="btn btn-primary" (click)="clicked = 'liste';"> Retour à la liste</button>
+              <button *ngIf="clicked === 'reclamation'" type="button" class="btn btn-primary" (click)="clicked = 'liste';"> Retour à la liste</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="clicked === 'reclamation'" class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <form [formGroup]="reclamationForm">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <h3>{{getProduit?.nom_produit}}</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Type de panne</mat-label>
+                            <mat-select formControlName="type_reclamation" style="z-index: 10000">
+                              <mat-option value="logiciel"> Logiciel  </mat-option>
+                              <mat-option value="materiel"> Materiel  </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="reclamationForm.hasError('required', 'type_reclamation')"> Type de panne de la reclamation est <b>obligatoire</b>
+                            </mat-error>
+                          </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                          <mat-label>Sujet</mat-label>
+                          <mat-select formControlName="sujet" style="z-index: 10000">
+                            <mat-option value="Panne"> Panne  </mat-option>
+                            <mat-option value="Demande d'informations"> Demande d'informations  </mat-option>
+                            <mat-option value="Mise à jour"> Mise à jour  </mat-option>
+                            <mat-option value="Prolongation du contrat"> Prolongation du contrat  </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="reclamationForm.hasError('required', 'sujet')"> Sujet de la reclamation est <b>obligatoire</b>
+                          </mat-error>
+                        </mat-form-field>
+                  </div>
+                    <div class="col-md-12">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Décrivez votre problème</mat-label>
+                            <textarea matInput rows="10" formControlName="description" placeholder="Décrivez votre problème"></textarea>
+                            <mat-error *ngIf="reclamationForm.hasError('required', 'type_reclamation')"> Description de votre problème est <b>obligatoire</b>
+                            </mat-error>
+                          </mat-form-field>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-3">
+                            <mat-radio-button (click)="getDegres('faible')" value="faible"> Faible</mat-radio-button>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-radio-button (click)="getDegres('moyenne')" value="moyenne"> Moyenne</mat-radio-button>
+                          </div>
+                          <div class="col-md-3">
+                              <mat-radio-button (click)="getDegres('forte')" value="forte"> Forte</mat-radio-button>
+                            </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12 text-right">
+                      <button class="btn btn-primary" [disabled]="!reclamationForm.valid" (click) = "ajouterReclamation(reclamationForm)">Générer</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        <div *ngIf="clicked === 'liste'" class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input type="text" style="height: 45px;" [(ngModel)]="searchType.search" class="form-control"
+                  placeholder="Search">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-2">
+                  <input (click)="addToFilter('status','active')" type="checkbox" class="form-control" />
+                </div>
+                <div class="col-md-10" style="margin-top: 2%;">
+                  Active
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-2">
+                  <input (click)="addToFilter('status','expire')" type="checkbox" class="form-control" />
+                </div>
+                <div class="col-md-10" style="margin-top: 2%;">
+                  Expiré
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-2">
+                    <input (click)="addToFilter('status','annule')" type="checkbox" class="form-control" />
+                  </div>
+                  <div class="col-md-10" style="margin-top: 2%;">
+                    Annulé
+                  </div>
+                </div>
+              </div>
+            <div style="margin-bottom: 2%;"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4" *ngFor=" let contrat of contratsFiltre | filterContrats: searchType.search">
+              <div class="card card-user">
+                <div class="image">
+                  <img src="../assets/img/contrat2.jpg" alt="...">
+                </div>
+                <div class="card-body">
+                  <div class="author">
+                    <a href="javascript:void(0)">
+                      <img *ngIf="contrat?.produit?.photo === ''" class="avatar border-gray"
+                        src="./../../assets/img/defaultImageProduit.jpg" alt="...">
+                      <img *ngIf="contrat?.produit?.photo !== ''" class="avatar border-gray"
+                        src="http://localhost:3000/upload/{{contrat?.produit?.photo}}" alt="...">
+
+                      <h5 class="title">{{contrat?.produit?.nom_produit}}</h5>
+                    </a>
+                    <p class="description">
+                      {{contrat?.periode}} Jours
+                    </p>
+                  </div>
+                </div>
+                <hr>
+                <div class="button-container">
+                  <button class="btn btn-primary btn-lg" *ngIf="contrat?.status === 'active'" matTooltipPosition="above"
+                    matTooltip="Réclamer" (click)="goToRecamation(contrat?.produit)"> <i class="material-icons"> report</i></button>
+                  <!-- <button *ngIf="contrat?.status === 'expire'" data-toggle="modal" (click)="getContrat(contrat?._id)"
+                    data-target="#reactiverContrat" class="btn btn-primary btn-lg" matTooltipPosition="above"
+                    matTooltip="Renouvler le contrat"> <i class="material-icons">check_circle_outline
+                    </i></button> -->
+                  <!-- <button *ngIf="contrat?.status === 'active'" class="btn btn-primary btn-lg"
+                    (click)="annulerContrat(contrat?._id)" matTooltipPosition="above" matTooltip="Annuler le contrat">
+                    <i class="material-icons">highlight_off
+                    </i></button> -->
+                  <h3 *ngIf="contrat?.status === 'annule'"> Vous avez annulé ce contrat</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="reactiverContrat" tabindex="-1" role="dialog" aria-labelledby="reactiverContratLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Réactiver le contrat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="contratFormReactivation">
+          <div class="row">
+            <div class="col-md-12">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Période du contrat</mat-label>
+                <input matInput formControlName="periode" type="number" placeholder="Période du contrat"> /Jours
+                <mat-error *ngIf="contratFormReactivation.hasError('required', 'periode')"> Période du contrat est
+                  <b>obligatoire</b></mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" [disabled]="!contratFormReactivation.valid"
+          (click)="reactiverContrat(contratFormReactivation)" data-dismiss="modal">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>

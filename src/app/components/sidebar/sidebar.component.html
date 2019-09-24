@@ -1,0 +1,18 @@
+
+<div class="logo">
+  <a href="javascript:void(0)" class="">
+    <div class="logo-img">
+        <img width="70px" src="./assets/img/Image1.png"/>
+    </div>
+  </a>
+</div>
+<div class="sidebar-wrapper">
+  <ul class="nav">
+      <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+          <a href="#homeSubmenu" routerLink="{{menuItem.path}}">
+              <i class="now-ui-icons {{menuItem.icon}}"></i>
+              <p>{{menuItem.title}}</p>
+          </a>
+      </li>
+  </ul>
+</div>

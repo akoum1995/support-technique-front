@@ -1,0 +1,43 @@
+<div style=" height: 700px; background-image: url('./../../assets/img/backgroundLogin.jpg')">
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div style="margin-bottom: 30%;"></div>
+      <form [formGroup]='loginForm' class="form" method="" action="#">
+        <div class="card card-login ">
+          <div class="card-header card-header-rose text-center">
+            <h4 class="card-title">Authentification</h4>
+          </div>
+          <div class="card-body ">
+            <p class="card-description text-center"></p>
+            <span class="bmd-form-group">
+              <div class="input-group">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-label>Identifiant</mat-label>
+                    <input matInput formControlName='email' placeholder="Identifiant">
+                    <mat-icon matSuffix>face</mat-icon>
+                    <mat-error *ngIf="loginForm.hasError('required', 'email')"> Email est <b>obligatoire</b></mat-error>
+                    <mat-error *ngIf="loginForm.hasError('email', 'email') && !loginForm.hasError('required', 'email')"> Email est <b>incorrecte</b></mat-error>
+                  </mat-form-field>
+              </div>
+            </span>
+            <span class="bmd-form-group">
+              <div class="input-group">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput formControlName='mot_de_passe' type="password" placeholder="Mot de passe ...">
+                    <mat-icon matSuffix>lock_outline</mat-icon>
+                    <mat-error *ngIf="loginForm.hasError('required', 'mot_de_passe')"> Mot de passe est <b>obligatoire</b></mat-error>
+                  </mat-form-field>
+              </div>
+            </span>
+          </div>
+          <div class="card-footer text-center">
+            <a href="javascript:void(0)" (click)='login(loginForm)' class="btn btn-primary btn-lg">Confirmer</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>

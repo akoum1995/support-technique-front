@@ -1,0 +1,355 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row" *ngIf="clicked === false">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-10">
+              <h4 class="card-title">Clients</h4>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-primary" routerLink="/plateforme/ajoutClient">Ajouter un
+                client</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input type="text" style="height: 45px;" [(ngModel)]="searchType.search" class="form-control"
+                  placeholder="Search">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-2">
+                  <input (click)="addToFilter('status','active')" type="checkbox" class="form-control" />
+                </div>
+                <div class="col-md-10" style="margin-top: 2%;">
+                  Active
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-2">
+                  <input (click)="addToFilter('status','supprime')" type="checkbox" class="form-control" />
+                </div>
+                <div class="col-md-10" style="margin-top: 2%;">
+                  Supprimé
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom: 2%;"></div>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                </th>
+                <th>
+                  Société
+                </th>
+                <th>
+                  Email
+                </th>
+                <th>
+                  Téléphone
+                </th>
+                <th>
+                </th>
+                <th class="text-right">
+                </th>
+
+              </thead>
+              <tbody *ngFor="let client of clientsFiltre | filterClients: searchType.search">
+                <tr>
+                  <td *ngIf="client?.client?.logo === ''">
+                    <img src="./../../assets/img/defaultImage.png" height="70px" width="70px">
+                  </td>
+                  <td *ngIf="client?.client?.logo !== ''">
+                    <img src="http://localhost:3000/upload/{{client?.client?.logo}}" height="70px" width="70px">
+                  </td>
+                  <td>
+                    {{client?.client?.nom_societe}}
+                  </td>
+                  <td>
+                    {{client?.email}}
+                  </td>
+                  <td>
+                    {{client?.client?.telephone}}
+                  </td>
+                  <td>
+                    <button mat-button (click)="getClient(client)" type="button" class="btn btn-info btn-link">
+                      <i class="material-icons">remove_red_eye</i>
+                    </button>
+                    <button *ngIf="client?.status !== 'supprime'" mat-button (click)="supprimeClient(client?._id)"
+                      type="button" class="btn btn-danger btn-link">
+                      <i class="material-icons">delete</i>
+                    </button>
+                    <button *ngIf="client?.status === 'supprime'" mat-button (click)="reactiveClient(client?._id)"
+                      type="button" class="btn btn-success btn-link">
+                      <i class="material-icons">check_circle_outline</i>
+                    </button>
+                  </td>
+                  <td *ngIf="client?.status === 'supprime'" class="ribbonRed">
+                    <span>SUPPRIME</span>
+                  </td>
+                  <td *ngIf="client?.status === 'active'" class="ribbon">
+                    <span>ACTIVE</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="clicked === true" class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-8">
+              <h4 class="card-title">Client</h4>
+            </div>
+            <div class="col-md-2">
+
+              <button type="button" class="btn btn-primary" (click)="clicked = false">Retour à la liste</button>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-primary" (click)="ajout = 'contrat';"> Générer un contrat</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="ajout === 'show'">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <img *ngIf="client?.client.logo === ''" src="./../../assets/img/defaultImage.png" height="200px"
+                  width="100%">
+                <img *ngIf="client?.client.logo !== ''" src="http://localhost:3000/upload/{{client?.client?.logo}}"
+                  height="200px" width="100%">
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h2>{{client?.client?.nom_societe}} <small>{{client?.status}}</small></h2>
+                  </div>
+                  <div class="col-md-12">
+                    <h4> email: {{client?.email}} <br> tel: {{client?.client?.telephone}} <br> adresse:
+                      {{client?.client?.address}} <br> Site web: {{client?.client?.site_web}}</h4>
+                  </div>
+                  <div class="col-md-12">
+                    <h5>{{client?.client?.description}}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <mat-tab-group mat-stretch-tabs>
+                  <mat-tab label="Contrats">
+                    <div class="row">
+                      <div class="col-md-4" *ngFor=" let contrat of contrats">
+                        <div class="card card-user">
+                          <div class="image">
+                            <img src="./../../../assets/img/contrat2.jpg" alt="...">
+                          </div>
+                          <div class="card-body">
+                            <div class="author">
+                              <a href="javascript:void(0)">
+                                <img *ngIf="contrat?.produit?.photo === ''" class="avatar border-gray"
+                                  src="./../../../assets/img/defaultImageProduit.jpg" alt="...">
+                                <img *ngIf="contrat?.produit?.photo !== ''" class="avatar border-gray"
+                                  src="http://localhost:3000/upload/{{contrat?.produit?.photo}}" alt="...">
+
+                                <h5 class="title">{{contrat?.produit?.nom_produit}}</h5>
+                              </a>
+                              <p class="description">
+                                {{contrat?.periode}} Jours
+                              </p>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="button-container">
+                            <button *ngIf="contrat?.status === 'expire'" data-toggle="modal" (click)="getContrat(contrat?._id)"
+                    data-target="#reactiverContrat" class="btn btn-primary btn-lg" matTooltipPosition="above"
+                    matTooltip="Renouvler le contrat"> <i class="material-icons">check_circle_outline
+                    </i></button>
+                            <button *ngIf="contrat?.status !== 'annule'" class="btn btn-primary btn-lg"
+                    (click)="annulerContrat(contrat?._id)" matTooltipPosition="above" matTooltip="Annuler le contrat">
+                    <i class="material-icons">highlight_off
+                    </i></button>
+                            <h3 *ngIf="contrat?.status === 'annule'"> Vous avez annulé ce contrat</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="Réclamations">
+                    <div class=row>
+                      <div class="col-md-4" *ngFor=" let reclamation of reclamations">
+                        <div class="card card-user">
+                          <div class="image">
+                            <img width="100%" src="./../../../assets/img/reclamation2.jpg" alt="...">
+                          </div>
+                          <div class="card-body">
+                            <div class="author">
+                              <a href="javascript:void(0)">
+                                <img *ngIf="reclamation?.produit?.photo === ''" class="avatar border-gray"
+                                  src="./../../../assets/img/defaultImageProduit.jpg" alt="...">
+                                <img *ngIf="reclamation?.produit?.photo !== ''" class="avatar border-gray"
+                                  src="http://localhost:3000/upload/{{reclamation?.produit?.photo}}" alt="...">
+
+                                <h5 class="title">{{client?.client?.nom_societe}} --
+                                  {{reclamation?.produit?.nom_produit}}</h5>
+                                <h6>{{reclamation?.type_reclamation}}--{{reclamation?.degres}}</h6>
+                                <h6>{{reclamation?.sujet}}</h6>
+                              </a>
+                              <button class="btn btn-primary" data-toggle="modal" data-target="#descriptionClientAdmin" (click)="getDescription(reclamation?.description)">Description</button>
+                              <!-- <p class="description">
+                                {{reclamation?.description}}
+                              </p> -->
+                            </div>
+                          </div>
+                          <hr>
+                  <div class="button-container">
+                    <h3 *ngIf="reclamation?.statut === 'non traitée'"> Non traitée</h3>
+                    <h3 *ngIf="reclamation?.statut === 'en cours'"> En cours</h3>
+                    <h3 *ngIf="reclamation?.statut === 'traitée'"> Traitée</h3>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#InterventionClientAdmin" (click)="getIntervention(reclamation?.intervention)"  *ngIf="reclamation?.statut === 'traitée' ">Voir PV</button>
+                  </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="ajout==='contrat'">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <form [formGroup]="conrtatAjoutForm">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Produit</mat-label>
+                        <mat-select formControlName="produit" style="z-index: 10000">
+                          <mat-option *ngFor="let produit of produits" [value]="produit._id">
+                            {{produit.nom_produit}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="conrtatAjoutForm.hasError('required', 'produit')"> Produit est
+                          <b>obligatoire</b>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Periode</mat-label>
+                        <input matInput formControlName="periode" type="number" placeholder="Période" /> / Jours
+                        <mat-error *ngIf="conrtatAjoutForm.hasError('required', 'periode')"> Période est
+                          <b>obligatoire</b>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-12 text-right">
+                      <button class="btn btn-primary" [disabled]="!conrtatAjoutForm.valid"
+                        (click)="ajouterContrat(conrtatAjoutForm)">Générer</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="reactiverContrat" tabindex="-1" role="dialog" aria-labelledby="reactiverContratLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Réactiver le contrat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="contratFormReactivation">
+          <div class="row">
+            <div class="col-md-12">
+              <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Période du contrat</mat-label>
+                <input matInput formControlName="periode" type="number" placeholder="Période du contrat"> /Jours
+                <mat-error *ngIf="contratFormReactivation.hasError('required', 'periode')"> Période du contrat est
+                  <b>obligatoire</b></mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" [disabled]="!contratFormReactivation.valid"
+          (click)="reactiverContrat(contratFormReactivation)" data-dismiss="modal">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="descriptionClientAdmin" tabindex="-1" role="dialog" aria-labelledby="descriptionClientLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">PV</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                     <p>{{description}}</p>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="InterventionClientAdmin" tabindex="-1" role="dialog" aria-labelledby="InterventionLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">PV</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                       <p>{{intervention?.pv}}</p>
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
